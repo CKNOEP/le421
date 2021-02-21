@@ -1,0 +1,10 @@
+## Interface: 11303
+## Title: 421
+## Notes: Deathroll Helper
+## Author: lancestre
+## Version: v1
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## Globe: check-classic
+
+421.lua
