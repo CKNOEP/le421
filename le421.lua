@@ -16,6 +16,7 @@ local function FramePool_Init(parent)
 end
 
 local function FramePool_All(parent)
+
   FramePool_Init(parent)
   return parent.FramePool
 end
@@ -64,9 +65,13 @@ local function Dice_SetEnabled(button, enabled)
     if enabled then button:Enable() else button:Disable() end
 end
 
+local function isempty(s)
+  return s == nil or s == ''
+end
+
+
 local function Dice_UpdateTable()
   local rows = Dice_SortedRolls()
-
   local scrollFrame = HANDLE.Frame.ScrollFrame
   local scrollChild = scrollFrame.Child
   local w = scrollFrame:GetWidth()
@@ -75,7 +80,7 @@ local function Dice_UpdateTable()
 
   -- Hide all previous row frames
   for i, frame in pairs(FramePool_All(scrollChild)) do
-    frame:Hide()
+    frame:Hide() 
   end
 
 
@@ -87,7 +92,11 @@ local function Dice_UpdateTable()
     local color = ""
 
     -- Set color to red for eliminated playersq
-    if v.roll <= 1 then
+    if isempty(v.roll) then
+	return
+	end
+	
+	if v.roll <= 1 then
       color = "|cffff0000"
     end
 
@@ -104,15 +113,21 @@ local function Dice_UpdateTable()
     local sago = math.floor(time() - v.ts)
 
     local fround = FramePool_Get(scrollChild)
-    fround:SetPoint("TOPLEFT", w * 0.8, top)
+    fround:SetPoint("TOPLEFT", w * 0.6, top)
     fround:SetText(string.format("Manche %d", v.round))
     fround:Show()
+	
+	local fjet =  FramePool_Get(scrollChild)
+	fjet:SetPoint("TOPLEFT", w * 0.8, top)
+    fjet:SetText(string.format("Jet# %d", math.floor((v.round/3)+0.5)))
+    fjet:Show()
 
     tinsert(textFrames, fplayer)
     tinsert(textFrames, froll)
     tinsert(textFrames, fround)
-
-    top = top - rowHeight
+	tinsert(textFrames, fjet)
+    
+	top = top - rowHeight
   end
 
   -- Put all row frames back in the pool
@@ -132,8 +147,15 @@ local function Dice_CanRoll()
   end
 
   local minRound = nil
+	
 
+  
   for k, v in pairs(HANDLE.rolls) do
+  
+  	if isempty(v.roll) then
+	return
+	end
+  
     -- Do not include 1 rolls (losers)
     if v.roll > 1 then
       if minRound then
