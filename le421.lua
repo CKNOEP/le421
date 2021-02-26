@@ -182,33 +182,38 @@ local function Dice_NextRoll()
 --
 
 	if keepdice3:GetChecked() then
-	  --Dices[1] = Dices[1]
+	  
 	else
 	  Dices[3]= math.random(1, 6)
 	end
 	
 	if keepdice2:GetChecked() then
-	  --Dices[2] = Dices[2]
+	  
 	else
 	  Dices[2]= math.random(1, 6)
 	end
 	
 	if keepdice1:GetChecked() then
-	  --Dices[3] = Dices[3]
+	  
 	else
 	  Dices[1]= math.random(1, 6)
 	end
 
 	
 	
-    table.sort(Dices)
+    --table.sort(Dices)
     
 
 
   SendChatMessage("joue : -{rt1}"..Dices[3]..Dices[2]..Dices[1].."{rt1}-" ,"EMOTE");
   --SendChatMessage("joue "..Dices[3]..Dices[2]..Dices[1].. " (1-6)","EMOTE")
-  
+  imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[1]..".blp")
+  imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[2]..".blp")
+  imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[3]..".blp")
 end
+
+
+
 
 local function Dice_Clear()
   HANDLE.rolls = {}
@@ -296,7 +301,8 @@ end
 
 local function Dice_Create(handle)
   local w = 400
-  local h = 300
+  local h = 400
+  
   local frame = CreateFrame("FRAME", "DiceFrame", UIParent, "UIPanelDialogTemplate")
   frame:SetSize(w, h)
   frame:SetPoint("CENTER")
@@ -320,7 +326,7 @@ local function Dice_Create(handle)
   -- Scrollable Frame
   local scrollFrame = CreateFrame("ScrollFrame", nil, frame, "UIPanelScrollFrameTemplate")
   scrollFrame:SetPoint("TOPLEFT", DiceFrameDialogBG, "TOPLEFT", 4, -4)
-  scrollFrame:SetPoint("BOTTOMRIGHT", DiceFrameDialogBG, "BOTTOMRIGHT", -22, 42)
+  scrollFrame:SetPoint("BOTTOMRIGHT", DiceFrameDialogBG, "BOTTOMRIGHT", -22, 82)
   -- scrollFrame:SetClipsChildren(true)
 
   local scrollChild = CreateFrame("Frame", nil, scrollFrame)
@@ -344,19 +350,41 @@ local function Dice_Create(handle)
   rollBtn:SetSize(bw, 22)
   rollBtn:SetScript('OnClick', Dice_NextRoll)
 
+  imgdice1 = Dice_CreateButton("", frame)
+  imgdice1:SetPoint("BOTTOMLEFT", 25, 65)
+  imgdice1:SetSize(40, 40)
+  imgdice1:SetScript('OnClick', Dice_Keepdice1)
+  imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
+
+  
+  imgdice2 = Dice_CreateButton("", frame)
+  imgdice2:SetPoint("BOTTOMLEFT", 135, 65)
+  imgdice2:SetSize(40, 40)
+  imgdice2:SetScript('OnClick', Dice_Keepdice2)
+  imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
+
+  
+  imgdice3 = Dice_CreateButton("", frame)
+  imgdice3:SetPoint("BOTTOMLEFT", 245, 65)
+  imgdice3:SetSize(40, 40)
+  imgdice3:SetScript('OnClick', Dice_Keepdice3)
+  imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
+
  
-  keepdice1 = CreateFrame("CheckButton","dice3", frame, "UICheckButtonTemplate")
-  keepdice1:SetPoint("BOTTOMLEFT", 245 , 25)
-  keepdice1.text = _G["dice3".."Text"]
-  keepdice1.text:SetText("Garde Dé 3")
+ 
+  keepdice1 = CreateFrame("CheckButton","dice1", frame, "UICheckButtonTemplate")
+  keepdice1:SetPoint("BOTTOMLEFT", 25 , 25)
+  keepdice1.text = _G["dice1".."Text"]
+  keepdice1.text:SetText("Garde Dé 1")
   keepdice1:SetScript("OnClick", function(self,event,arg1) 
-  if self:GetChecked() then
-    print("Button3 is checked")
-	return true
-  else
-    print("Button3 is unchecked")
-	return false
-  end
+	  if self:GetChecked() then
+		print("le Dé1 ne sera pas relancé")
+		return true
+	  else
+		print("le Dé1 sera relancé")
+		return false
+	  end
+  
   end)
   
   keepdice2 = CreateFrame("CheckButton","dice2", frame, "UICheckButtonTemplate")
@@ -364,28 +392,29 @@ local function Dice_Create(handle)
   keepdice2.text = _G["dice2".."Text"]
   keepdice2.text:SetText("Garde Dé 2")
   keepdice2:SetScript("OnClick", function(self,event,arg1) 
-  if self:GetChecked() then
-    print("Button2 is checked")
-	return true
-  else
-    print("Button2 is unchecked")
-	return false
-  end
+	  if self:GetChecked() then
+		print("Button2 is checked")
+		return true
+	  else
+		print("Button2 is unchecked")
+		return false
+	  end
+  end)
+  
+  keepdice3 = CreateFrame("CheckButton","dice3", frame, "UICheckButtonTemplate")
+  keepdice3:SetPoint("BOTTOMLEFT", 245 , 25)
+  keepdice3.text = _G["dice3".."Text"]
+  keepdice3.text:SetText("Garde Dé 3")
+  keepdice3:SetScript("OnClick", function(self,event,arg1) 
+	  if self:GetChecked() then
+		print("Button3 is checked")
+		return true
+	  else
+		print("Button3 is unchecked")
+		return false
+	  end
   end)
 
-  keepdice3 = CreateFrame("CheckButton","dice1", frame, "UICheckButtonTemplate")
-  keepdice3:SetPoint("BOTTOMLEFT", 25 , 25)
-  keepdice3.text = _G["dice1".."Text"]
-  keepdice3.text:SetText("Garde Dé 1")
-  keepdice3:SetScript("OnClick", function(self,event,arg1) 
-  if self:GetChecked() then
-    print("Button1 is checked")
-	return true
-  else
-    print("Button1 is unchecked")
-	return false
-  end
-  end) 
   
   
   
@@ -395,11 +424,34 @@ local function Dice_Create(handle)
   
 end
 
-Dice_Create(HANDLE)
 
+
+local function Dice_Keepdice1(self, event)
+		if keepdice1:GetChecked() then
+		  keepdice1:SetChecked(true)
+		else
+		  keepdice1:GetChecked(false)
+		end
+end
+local function Dice_Keepdice2(self, event)
+		if keepdice1:GetChecked() then
+		  keepdice1:SetChecked(true)
+		else
+		  keepdice1:GetChecked(false)
+		end
+end
+local function Dice_Keepdice3(self, event)
+		if keepdice1:GetChecked() then
+		  keepdice1:SetChecked(true)
+		else
+		  keepdice1:GetChecked(false)
+		end
+end
+
+Dice_Create(HANDLE)
 SlashCmdList["DICE"] = function(msg)
    HANDLE.Frame:Show()
 end 
 
 -- DEBUG
---HANDLE.Frame:Show()
+HANDLE.Frame:Show()
