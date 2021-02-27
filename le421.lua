@@ -182,34 +182,112 @@ local function Dice_NextRoll()
 --
 
 	if keepdice3:GetChecked() then
-	  
+	    print("K3: ".."True")  
 	else
-	  Dices[3]= math.random(1, 6)
+	  Dices[1]= math.random(1, 6)
+	    print("K3: ".."False")  
 	end
 	
 	if keepdice2:GetChecked() then
-	  
+	  print("K2: ".."True")  
 	else
 	  Dices[2]= math.random(1, 6)
+	  print("K2: ".."False")  
 	end
 	
 	if keepdice1:GetChecked() then
-	  
+	   print("K1: ".."True")  
+	   
 	else
-	  Dices[1]= math.random(1, 6)
+	  Dices[3]= math.random(1, 6)
+	  print("K1: ".."False")  
 	end
 
 	
 	
-    --table.sort(Dices)
-    
+    table.sort(Dices)
+		
 
 
   SendChatMessage("joue : -{rt1}"..Dices[3]..Dices[2]..Dices[1].."{rt1}-" ,"EMOTE");
+  --421
+  if Dices[1]+Dices[2]+Dices[3]==7 and Dices[1]*Dices[2]*Dices[3]==8 then
+  SendChatMessage("421 , yeah ! -10 jetons au pot" ,"EMOTE");
+  end
+  
+  --3as
+  if Dices[1]+Dices[2]+Dices[3]==3 and Dices[1]*Dices[2]*Dices[3]==1 then
+  SendChatMessage("-7 jetons au pot" ,"EMOTE");
+  end
+  
+  --3 Six
+   if Dices[1]+Dices[2]+Dices[3]==18 then
+  SendChatMessage("-6 jetons au pot" ,"EMOTE");
+  end
+  
+  --deux As 6
+  if Dices[1]+Dices[2]+Dices[3]==8 and Dices[1]*Dices[2]*Dices[3]==6 then
+  SendChatMessage("-6 jetons au pot" ,"EMOTE");
+  end
+  --deux As 5
+  if Dices[3]==6 and Dices[2] == 1 and Dices[1]==1 then
+  SendChatMessage("-5 jetons au pot" ,"EMOTE");
+  end
+   --deux As 4
+  if Dices[3]==4 and Dices[2] == 1 and Dices[1]==1 then
+  SendChatMessage("-4 jetons au pot" ,"EMOTE");
+  end 
+    --deux As 3
+  if Dices[3]==3 and Dices[2] == 1 and Dices[1]==1 then
+  SendChatMessage("-3 jetons au pot" ,"EMOTE");
+  end
+    --deux As 2
+  if Dices[3]==2 and Dices[2] == 1 and Dices[1]==1 then
+  SendChatMessage("-2 jetons au pot" ,"EMOTE");
+  end
+  
+  
+  --Nenette
+  if Dices[3]==2 and Dices[2] == 2 and Dices[1]==1 then
+  SendChatMessage("Outch Nenette +2 jetons DTG" ,"EMOTE");
+  end
+  
+ 
+  
+  --3 Cinq
+	if Dices[1] == 5 and  Dices[2] == 5 and Dices[3] == 5 then
+    SendChatMessage("-5 jetons au pot" ,"EMOTE");
+	end
+  --3 Quatre
+	if Dices[1] == 4 and  Dices[2] == 4 and Dices[3] == 4 then
+    SendChatMessage("-4 jetons au pot" ,"EMOTE");
+	end
+  --3 Trois
+	if Dices[1] == 3 and  Dices[2] == 3 and Dices[3] == 3 then
+    SendChatMessage("-2 jetons au pot" ,"EMOTE");
+	end
+	
+  --3 Deux
+	if Dices[1] == 2 and  Dices[2] == 2 and Dices[3] == 2 then
+    SendChatMessage("-2 jetons au pot" ,"EMOTE");
+	end
+	
+	--Suite
+	if Dices[3] == Dices[2]+1 and  Dices[2] == Dices[1]+1  then
+    SendChatMessage("Suite : -2 jetons au pot" ,"EMOTE");
+	end
+  
+  
   --SendChatMessage("joue "..Dices[3]..Dices[2]..Dices[1].. " (1-6)","EMOTE")
-  imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[1]..".blp")
+  imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[3]..".blp")
   imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[2]..".blp")
-  imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[3]..".blp")
+  imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[1]..".blp")
+  keepdice1:SetChecked(false)
+  keepdice2:SetChecked(false)
+  keepdice3:SetChecked(false)
+  keepdice1:Show()
+  keepdice2:Show()
+  keepdice3:Show()
 end
 
 
@@ -222,6 +300,13 @@ local function Dice_Clear()
   keepdice1:SetChecked(false)
   keepdice2:SetChecked(false)
   keepdice3:SetChecked(false)
+  imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
+  imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
+  imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
+  keepdice1:Hide()
+  keepdice2:Hide()
+  keepdice3:Hide()
+  
 end
 
 local function Dice_CaptureRoll(name, roll, min, max)
@@ -376,16 +461,18 @@ local function Dice_Create(handle)
   keepdice1:SetPoint("BOTTOMLEFT", 25 , 25)
   keepdice1.text = _G["dice1".."Text"]
   keepdice1.text:SetText("Garde Dé 1")
+
   keepdice1:SetScript("OnClick", function(self,event,arg1) 
 	  if self:GetChecked() then
-		print("le Dé1 ne sera pas relancé")
+		print("le Dé1("..Dices[3]..")ne sera pas relancé")
 		return true
 	  else
-		print("le Dé1 sera relancé")
+		print("le Dé1("..Dices[1]..")sera relancé")
 		return false
 	  end
   
   end)
+  keepdice1:Hide()
   
   keepdice2 = CreateFrame("CheckButton","dice2", frame, "UICheckButtonTemplate")
   keepdice2:SetPoint("BOTTOMLEFT", 135 , 25)
@@ -393,13 +480,14 @@ local function Dice_Create(handle)
   keepdice2.text:SetText("Garde Dé 2")
   keepdice2:SetScript("OnClick", function(self,event,arg1) 
 	  if self:GetChecked() then
-		print("Button2 is checked")
+		print("le Dé2("..Dices[2]..")ne sera pas relancé")
 		return true
 	  else
-		print("Button2 is unchecked")
+		print("le Dé2("..Dices[2]..")sera relancé")
 		return false
 	  end
   end)
+  keepdice2:Hide()
   
   keepdice3 = CreateFrame("CheckButton","dice3", frame, "UICheckButtonTemplate")
   keepdice3:SetPoint("BOTTOMLEFT", 245 , 25)
@@ -407,14 +495,14 @@ local function Dice_Create(handle)
   keepdice3.text:SetText("Garde Dé 3")
   keepdice3:SetScript("OnClick", function(self,event,arg1) 
 	  if self:GetChecked() then
-		print("Button3 is checked")
+		print("le Dé3("..Dices[1]..")ne sera pas relancé")
 		return true
 	  else
-		print("Button3 is unchecked")
+		print("le Dé3("..Dices[1]..")sera relancé")
 		return false
 	  end
   end)
-
+  keepdice3:Hide()
   
   
   
