@@ -76,13 +76,14 @@ local function Dice_UpdateTable()
   local scrollChild = scrollFrame.Child
   local w = scrollFrame:GetWidth()
   local top = -4
+  local top_top = -4
   local rowHeight = 18
 
   -- Hide all previous row frames
   for i, frame in pairs(FramePool_All(scrollChild)) do
     frame:Hide() 
   end
-
+--print (v.roll)
 
   -- Make new row frames if necessary or reuse from pool
   local textFrames = {}
@@ -119,10 +120,11 @@ local function Dice_UpdateTable()
 	
 	local fjet =  FramePool_Get(scrollChild)
 	fjet:SetPoint("TOPLEFT", w * 0.8, top)
-    fjet:SetText(string.format("Jet# %d", math.floor((v.round/3)+0.5)))
+    fjet:SetText(string.format("Jetons: %d", Score))
     fjet:Show()
 
-    tinsert(textFrames, fplayer)
+    
+	tinsert(textFrames, fplayer)
     tinsert(textFrames, froll)
     tinsert(textFrames, fround)
 	tinsert(textFrames, fjet)
@@ -182,25 +184,25 @@ local function Dice_NextRoll()
 --
 
 	if keepdice3:GetChecked() then
-	    print("K3: ".."True")  
+	   -- print("K3: ".."True")  
 	else
 	  Dices[1]= math.random(1, 6)
-	    print("K3: ".."False")  
+	  --  print("K3: ".."False")  
 	end
 	
 	if keepdice2:GetChecked() then
-	  print("K2: ".."True")  
+	  --print("K2: ".."True")  
 	else
 	  Dices[2]= math.random(1, 6)
-	  print("K2: ".."False")  
+	  --print("K2: ".."False")  
 	end
 	
 	if keepdice1:GetChecked() then
-	   print("K1: ".."True")  
+	  -- print("K1: ".."True")  
 	   
 	else
 	  Dices[3]= math.random(1, 6)
-	  print("K1: ".."False")  
+	  --print("K1: ".."False")  
 	end
 
 	
@@ -213,43 +215,52 @@ local function Dice_NextRoll()
   --421
   if Dices[1]+Dices[2]+Dices[3]==7 and Dices[1]*Dices[2]*Dices[3]==8 then
   SendChatMessage("421 , yeah ! -10 jetons au pot" ,"EMOTE");
+  Score = -10
   end
   
   --3as
   if Dices[1]+Dices[2]+Dices[3]==3 and Dices[1]*Dices[2]*Dices[3]==1 then
   SendChatMessage("-7 jetons au pot" ,"EMOTE");
+    Score = -7
   end
   
   --3 Six
    if Dices[1]+Dices[2]+Dices[3]==18 then
   SendChatMessage("-6 jetons au pot" ,"EMOTE");
+    Score = -6
   end
   
   --deux As 6
   if Dices[1]+Dices[2]+Dices[3]==8 and Dices[1]*Dices[2]*Dices[3]==6 then
   SendChatMessage("-6 jetons au pot" ,"EMOTE");
+    Score = -6
   end
   --deux As 5
   if Dices[3]==6 and Dices[2] == 1 and Dices[1]==1 then
   SendChatMessage("-5 jetons au pot" ,"EMOTE");
+    Score = -5
   end
    --deux As 4
   if Dices[3]==4 and Dices[2] == 1 and Dices[1]==1 then
   SendChatMessage("-4 jetons au pot" ,"EMOTE");
+    Score = -2
   end 
     --deux As 3
   if Dices[3]==3 and Dices[2] == 1 and Dices[1]==1 then
   SendChatMessage("-3 jetons au pot" ,"EMOTE");
+    Score = -3
   end
     --deux As 2
   if Dices[3]==2 and Dices[2] == 1 and Dices[1]==1 then
   SendChatMessage("-2 jetons au pot" ,"EMOTE");
+   Score = -2
   end
   
   
   --Nenette
   if Dices[3]==2 and Dices[2] == 2 and Dices[1]==1 then
   SendChatMessage("Outch Nenette +2 jetons DTG" ,"EMOTE");
+   Score = 2
   end
   
  
@@ -257,25 +268,36 @@ local function Dice_NextRoll()
   --3 Cinq
 	if Dices[1] == 5 and  Dices[2] == 5 and Dices[3] == 5 then
     SendChatMessage("-5 jetons au pot" ,"EMOTE");
+	Score = -5
 	end
+	  
   --3 Quatre
 	if Dices[1] == 4 and  Dices[2] == 4 and Dices[3] == 4 then
     SendChatMessage("-4 jetons au pot" ,"EMOTE");
+	Score = -4
 	end
+	  
   --3 Trois
 	if Dices[1] == 3 and  Dices[2] == 3 and Dices[3] == 3 then
     SendChatMessage("-2 jetons au pot" ,"EMOTE");
+	Score = -3
 	end
+	  
 	
   --3 Deux
 	if Dices[1] == 2 and  Dices[2] == 2 and Dices[3] == 2 then
     SendChatMessage("-2 jetons au pot" ,"EMOTE");
-	end
+	 Score = -2
+	 end
+	 
 	
 	--Suite
 	if Dices[3] == Dices[2]+1 and  Dices[2] == Dices[1]+1  then
     SendChatMessage("Suite : -2 jetons au pot" ,"EMOTE");
+	  Score = -2
 	end
+	
+	  
   
   
   --SendChatMessage("joue "..Dices[3]..Dices[2]..Dices[1].. " (1-6)","EMOTE")
