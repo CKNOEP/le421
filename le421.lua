@@ -193,13 +193,15 @@ local function Dice_NextRoll()
 
 	if keepdice3:GetChecked() then
 	   -- print("K3: ".."True")  
+	  
 	else
 	  Dices[1]= math.random(1, 6)
 	  --  print("K3: ".."False")  
 	end
 	
 	if keepdice2:GetChecked() then
-	  --print("K2: ".."True")  
+	  --print("K2: ".."True")
+	  
 	else
 	  Dices[2]= math.random(1, 6)
 	  --print("K2: ".."False")  
@@ -207,7 +209,7 @@ local function Dice_NextRoll()
 	
 	if keepdice1:GetChecked() then
 	  -- print("K1: ".."True")  
-	   
+	  
 	else
 	  Dices[3]= math.random(1, 6)
 	  --print("K1: ".."False")  
@@ -338,7 +340,45 @@ local function Dice_Clear()
   keepdice3:Hide()
   
 end
-
+local function switch_Keepdice1()
+		
+	if keepdice1:IsShown() == false then
+		return
+		else
+		if keepdice1:GetChecked() == true then
+		keepdice1:SetChecked(false)
+		else
+		keepdice1:SetChecked(true)
+		end
+		print(keepdice1:GetChecked())
+	end
+end
+local function switch_Keepdice2()
+		
+	if keepdice2:IsShown() == false then
+		return
+		else
+		if keepdice2:GetChecked() == true then
+		keepdice2:SetChecked(false)
+		else
+		keepdice2:SetChecked(true)
+		end
+		print(keepdice2:GetChecked())
+	end
+end
+local function switch_Keepdice3()
+		
+	if keepdice3:IsShown() == false then
+		return
+		else
+		if keepdice3:GetChecked() == true then
+		keepdice3:SetChecked(false)
+		else
+		keepdice3:SetChecked(true)
+		end
+		print(keepdice3:GetChecked())
+	end
+end
 local function Dice_CaptureRoll(name, roll, min, max)
   local prev = HANDLE.rolls[name]
   --print (prev)
@@ -440,7 +480,7 @@ local function Dice_Create(handle)
   local x = 8
   
   
-  local clearBtn = Dice_CreateButton("Efface", frame)
+  local clearBtn = Dice_CreateButton("Nvelle partie", frame)
   clearBtn:SetPoint("BOTTOMLEFT", 8, 8)
   clearBtn:SetSize(bw, 22)
   clearBtn:SetScript('OnClick', Dice_Clear)
@@ -460,21 +500,21 @@ local function Dice_Create(handle)
   imgdice1 = Dice_CreateButton("", frame)
   imgdice1:SetPoint("BOTTOMLEFT", 25, 65)
   imgdice1:SetSize(40, 40)
-  imgdice1:SetScript('OnClick', Dice_Keepdice1)
+  imgdice1:SetScript('OnClick', switch_Keepdice1)
   imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
 
   
   imgdice2 = Dice_CreateButton("", frame)
   imgdice2:SetPoint("BOTTOMLEFT", 135, 65)
   imgdice2:SetSize(40, 40)
-  imgdice2:SetScript('OnClick', Dice_Keepdice2)
+  imgdice2:SetScript('OnClick', switch_Keepdice2)
   imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
 
   
   imgdice3 = Dice_CreateButton("", frame)
   imgdice3:SetPoint("BOTTOMLEFT", 245, 65)
   imgdice3:SetSize(40, 40)
-  imgdice3:SetScript('OnClick', Dice_Keepdice3)
+  imgdice3:SetScript('OnClick', switch_Keepdice3)
   imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
 
  -- Option Keep the dice
@@ -535,32 +575,14 @@ local function Dice_Create(handle)
   
 end
 
-local function Dice_Keepdice1()
-		
-		 print ("keep1")
-		if keepdice1:GetChecked() then
-		  print ("keep")
-		  keepdice1:SetChecked(true)
-		else
-		 print ("Unkeep")
-		  keepdice1:SetChecked(false)
-		end
+
+local function switch_Keepdice2()
+	print ("keep2")
+
 end
-local function Dice_Keepdice2()
-	 print ("keep2")
-		if keepdice1:GetChecked() then
-		  keepdice1:SetChecked(true)
-		else
-		  keepdice1:SetChecked(false)
-		end
-end
-local function Dice_Keepdice3()
-	 print ("keep3")
-		if keepdice1:GetChecked() then
-		  keepdice1:SetChecked(true)
-		else
-		  keepdice1:SetChecked(false)
-		end
+local function switch_Keepdice3()
+	print ("keep3")
+
 end
 
 Dice_Create(HANDLE)
