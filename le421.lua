@@ -81,7 +81,7 @@ local function Dice_UpdateTable()
 
   -- Hide all previous row frames
   for i, frame in pairs(FramePool_All(scrollChild)) do
-    frame:Hide() 
+   frame:Hide() 
   end
 --print (v.roll)
 
@@ -115,7 +115,7 @@ local function Dice_UpdateTable()
 
     local fround = FramePool_Get(scrollChild)
     fround:SetPoint("TOPLEFT", w * 0.6, top)
-    fround:SetText(string.format("Manche %d", v.round))
+    fround:SetText(string.format("Nb Jet: %d", v.round))
     fround:Show()
 	
 	local fjet =  FramePool_Get(scrollChild)
@@ -145,7 +145,8 @@ end
 local function Dice_CanRoll()
     -- Don't allow rolling if we already hit 1
   if Dice_GetLastValue("roll", INITIAL_ROLL) <= 1 then
-    return false
+   
+	return false
   end
 
   local minRound = nil
@@ -167,7 +168,10 @@ local function Dice_CanRoll()
       end
     end
   end
-
+ if minRound >= 3 then
+ --print(minRound)
+ return false
+ end
   -- Always allow rolls if no round started yet
   if not minRound then
     return true
@@ -177,7 +181,11 @@ local function Dice_CanRoll()
 
   return myRound <= minRound
 end
-
+local function Dice_SkeepNextRoll()
+ validateBtn:Hide()
+ rollBtn:Hide()
+ SendChatMessage("Passe : *{rt1}"..Dices[3]..Dices[2]..Dices[1].."{rt1}*","EMOTE")
+end
 local function Dice_NextRoll()
   --local lastRoll = Dice_GetLastValue("roll", INITIAL_ROLL)
 
@@ -210,56 +218,56 @@ local function Dice_NextRoll()
     table.sort(Dices)
 		
 
-
-  SendChatMessage("joue : -{rt1}"..Dices[3]..Dices[2]..Dices[1].."{rt1}-" ,"EMOTE");
+ScoreMessage=""
+ 
   --421
   if Dices[1]+Dices[2]+Dices[3]==7 and Dices[1]*Dices[2]*Dices[3]==8 then
-  SendChatMessage("421 , yeah ! -10 jetons au pot" ,"EMOTE");
+  ScoreMessage ="421 , yeah ! -10 jetons au pot"
   Score = -10
   end
   
   --3as
   if Dices[1]+Dices[2]+Dices[3]==3 and Dices[1]*Dices[2]*Dices[3]==1 then
-  SendChatMessage("-7 jetons au pot" ,"EMOTE");
+ ScoreMessage ="-7 jetons au pot"
     Score = -7
   end
   
   --3 Six
    if Dices[1]+Dices[2]+Dices[3]==18 then
-  SendChatMessage("-6 jetons au pot" ,"EMOTE");
+  ScoreMessage ="-6 jetons au pot"
     Score = -6
   end
   
   --deux As 6
   if Dices[1]+Dices[2]+Dices[3]==8 and Dices[1]*Dices[2]*Dices[3]==6 then
-  SendChatMessage("-6 jetons au pot" ,"EMOTE");
+  ScoreMessage ="-6 jetons au pot"
     Score = -6
   end
   --deux As 5
-  if Dices[3]==6 and Dices[2] == 1 and Dices[1]==1 then
-  SendChatMessage("-5 jetons au pot" ,"EMOTE");
+  if Dices[3]==5 and Dices[2] == 1 and Dices[1]==1 then
+  ScoreMessage ="-5 jetons au pot"
     Score = -5
   end
    --deux As 4
   if Dices[3]==4 and Dices[2] == 1 and Dices[1]==1 then
-  SendChatMessage("-4 jetons au pot" ,"EMOTE");
+  ScoreMessage ="-4 jetons au pot"
     Score = -2
   end 
     --deux As 3
   if Dices[3]==3 and Dices[2] == 1 and Dices[1]==1 then
-  SendChatMessage("-3 jetons au pot" ,"EMOTE");
+  ScoreMessage ="-3 jetons au pot"
     Score = -3
   end
     --deux As 2
   if Dices[3]==2 and Dices[2] == 1 and Dices[1]==1 then
-  SendChatMessage("-2 jetons au pot" ,"EMOTE");
+ ScoreMessage ="-2 jetons au pot"
    Score = -2
   end
   
   
   --Nenette
   if Dices[3]==2 and Dices[2] == 2 and Dices[1]==1 then
-  SendChatMessage("Outch Nenette +2 jetons DTG" ,"EMOTE");
+  ScoreMessage ="Outch Nenette +2 jetons DTG"
    Score = 2
   end
   
@@ -267,39 +275,39 @@ local function Dice_NextRoll()
   
   --3 Cinq
 	if Dices[1] == 5 and  Dices[2] == 5 and Dices[3] == 5 then
-    SendChatMessage("-5 jetons au pot" ,"EMOTE");
+	ScoreMessage ="-5 jetons au pot"
 	Score = -5
 	end
 	  
   --3 Quatre
 	if Dices[1] == 4 and  Dices[2] == 4 and Dices[3] == 4 then
-    SendChatMessage("-4 jetons au pot" ,"EMOTE");
+	ScoreMessage ="-4 jetons au pot"
 	Score = -4
 	end
 	  
   --3 Trois
 	if Dices[1] == 3 and  Dices[2] == 3 and Dices[3] == 3 then
-    SendChatMessage("-2 jetons au pot" ,"EMOTE");
+    ScoreMessage ="-2 jetons au pot"
 	Score = -3
 	end
 	  
 	
   --3 Deux
 	if Dices[1] == 2 and  Dices[2] == 2 and Dices[3] == 2 then
-    SendChatMessage("-2 jetons au pot" ,"EMOTE");
+    ScoreMessage ="-2 jetons au pot"
 	 Score = -2
 	 end
 	 
 	
 	--Suite
 	if Dices[3] == Dices[2]+1 and  Dices[2] == Dices[1]+1  then
-    SendChatMessage("Suite : -2 jetons au pot" ,"EMOTE");
+    ScoreMessage ="Suite : -2 jetons au pot"
 	  Score = -2
 	end
 	
 	  
   
-  
+  SendChatMessage("joue : -{rt1}"..Dices[3]..Dices[2]..Dices[1].."{rt1}-".."  //   " ..ScoreMessage ,"EMOTE");
   --SendChatMessage("joue "..Dices[3]..Dices[2]..Dices[1].. " (1-6)","EMOTE")
   imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[3]..".blp")
   imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\"..Dices[2]..".blp")
@@ -310,10 +318,8 @@ local function Dice_NextRoll()
   keepdice1:Show()
   keepdice2:Show()
   keepdice3:Show()
+  validateBtn:Show()
 end
-
-
-
 
 local function Dice_Clear()
   HANDLE.rolls = {}
@@ -325,6 +331,8 @@ local function Dice_Clear()
   imgdice1:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
   imgdice2:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
   imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\1"..".blp")
+  validateBtn:Hide()
+  rollBtn:Show()
   keepdice1:Hide()
   keepdice2:Hide()
   keepdice3:Hide()
@@ -353,35 +361,23 @@ local function Dice_CaptureRoll(name, roll, min, max)
 
   Dice_UpdateTable()
   Dice_SetEnabled(HANDLE.RollButton, Dice_CanRoll())
+  Dice_SetEnabled(HANDLE.validateBtn, Dice_CanRoll())
 end
 
 local function Dice_ParseChat(msg,name)
   local rx = "^(.+) joue $"
-  --print ("Rx:"..msg:match(rx))
-  --print("msg:"..msg)
-  --print ("pos:".. string.find( msg, "joue" ))
-  --local name = UnitName("player");
-  --, sroll, smin, smax = msg:match(rx)
-  --local name, sroll, smin, smax = msg:match(rx)
-  --local roll = tonumber(Dices[3]..Dices[2]..Dices[1])+1-1
-  --print (msg)
   
   local roll = tonumber(string.match(msg,"%d%d%d"))
   --print (roll)
   local min = tonumber(6)
   local max = tonumber(1)
-  --print(name,roll,min,max)
---name = arg2
+
 	
   if name then
   
 
     Dice_CaptureRoll(name, roll, min, max)
 
-    -- For testing purposes only
-    -- for i=1,3 do
-    --   Dice_CaptureRoll(name..i, roll-i, min, max-1)
-    -- end
   end
 end
 
@@ -390,11 +386,7 @@ local function Dice_OnEvent(frame, event, arg1, arg2, ...)
   if event == "CHAT_MSG_EMOTE" then
     
 	Dice_ParseChat(string.sub(arg2,1,string.find( arg2, "-" )-1)..arg1,string.sub(arg2,1,string.find( arg2, "-" )-1))
-	-- debug.
-	--print ("pos -:".. string.find( arg2, "-" ))
-	--print(arg2)
-	--print(string.sub(arg2,1,string.find( arg2, "-" )-1)) 
-	--print("parsechat:",string.sub(arg2,1,string.find( arg2, "-" )-1),arg1)
+
   end
 end
 
@@ -415,7 +407,7 @@ local function Dice_Create(handle)
   frame:SetPoint("CENTER")
 
   -- Dialog title
-  frame.Title:SetText("4.2.1 by l'ancêtre")
+  frame.Title:SetText("4.2.1 by l'ancêtre, /421 pour lancer une partie ")
 
   -- Make frame draggable
   frame:SetMovable(true)
@@ -444,19 +436,27 @@ local function Dice_Create(handle)
   frame.ScrollFrame = scrollFrame
 
   -- Buttons
-  local bw = (w - 12) / 2
+  local bw = (w - 12) / 3
   local x = 8
+  
+  
   local clearBtn = Dice_CreateButton("Efface", frame)
-  clearBtn:SetPoint("BOTTOMLEFT", x, 8)
+  clearBtn:SetPoint("BOTTOMLEFT", 8, 8)
   clearBtn:SetSize(bw, 22)
   clearBtn:SetScript('OnClick', Dice_Clear)
   
-
-  local rollBtn = Dice_CreateButton("Lancer les dés", frame)
-  rollBtn:SetPoint("BOTTOMLEFT", x + bw, 8)
+  rollBtn = Dice_CreateButton("Lancer les dés", frame)
+  rollBtn:SetPoint("BOTTOMRIGHT", -8, 8)
   rollBtn:SetSize(bw, 22)
   rollBtn:SetScript('OnClick', Dice_NextRoll)
+  
+  validateBtn = Dice_CreateButton("Valider les dés", frame)
+  validateBtn:SetPoint("BOTTOM", 0 , 8)
+  validateBtn:SetSize(bw, 22)
+  validateBtn:SetScript('OnClick', Dice_SkeepNextRoll)
+  validateBtn:Disable()
 
+  -- Dices Images	
   imgdice1 = Dice_CreateButton("", frame)
   imgdice1:SetPoint("BOTTOMLEFT", 25, 65)
   imgdice1:SetSize(40, 40)
@@ -477,7 +477,7 @@ local function Dice_Create(handle)
   imgdice3:SetScript('OnClick', Dice_Keepdice3)
   imgdice3:SetNormalTexture("Interface\\AddOns\\le421\\images\\1.blp")
 
- 
+ -- Option Keep the dice
  
   keepdice1 = CreateFrame("CheckButton","dice1", frame, "UICheckButtonTemplate")
   keepdice1:SetPoint("BOTTOMLEFT", 25 , 25)
@@ -531,10 +531,9 @@ local function Dice_Create(handle)
   handle.Frame = frame
   handle.ClearButton = clearBtn
   handle.RollButton = rollBtn
+  handle.validateBtn = validateBtn
   
 end
-
-
 
 local function Dice_Keepdice1(self, event)
 		if keepdice1:GetChecked() then
@@ -564,4 +563,4 @@ SlashCmdList["DICE"] = function(msg)
 end 
 
 -- DEBUG
-HANDLE.Frame:Show()
+--HANDLE.Frame:Show()
