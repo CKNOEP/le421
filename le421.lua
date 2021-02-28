@@ -535,25 +535,31 @@ local function Dice_Create(handle)
   
 end
 
-local function Dice_Keepdice1(self, event)
+local function Dice_Keepdice1()
+		
+		 print ("keep1")
 		if keepdice1:GetChecked() then
+		  print ("keep")
 		  keepdice1:SetChecked(true)
 		else
-		  keepdice1:GetChecked(false)
+		 print ("Unkeep")
+		  keepdice1:SetChecked(false)
 		end
 end
-local function Dice_Keepdice2(self, event)
+local function Dice_Keepdice2()
+	 print ("keep2")
 		if keepdice1:GetChecked() then
 		  keepdice1:SetChecked(true)
 		else
-		  keepdice1:GetChecked(false)
+		  keepdice1:SetChecked(false)
 		end
 end
-local function Dice_Keepdice3(self, event)
+local function Dice_Keepdice3()
+	 print ("keep3")
 		if keepdice1:GetChecked() then
 		  keepdice1:SetChecked(true)
 		else
-		  keepdice1:GetChecked(false)
+		  keepdice1:SetChecked(false)
 		end
 end
 
