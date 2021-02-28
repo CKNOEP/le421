@@ -379,7 +379,7 @@ local function switch_Keepdice3()
 		print(keepdice3:GetChecked())
 	end
 end
-local function Dice_CaptureRoll(name, roll, min, max)
+local function Dice_CaptureRoll(name, roll, min, max, passe)
   local prev = HANDLE.rolls[name]
   --print (prev)
   local round = 0
@@ -388,7 +388,11 @@ local function Dice_CaptureRoll(name, roll, min, max)
     round = prev.round
   end
 
-  round = round + 1
+	if passe =="Passe" then
+	round=round 
+	else
+	round = round + 1
+	end
 
   HANDLE.rolls[name] = {
     name=name,
@@ -406,6 +410,8 @@ end
 
 local function Dice_ParseChat(msg,name)
   local rx = "^(.+) joue $"
+  local passe = string.match(msg,"Pass.")
+  
   
   local roll = tonumber(string.match(msg,"%d%d%d"))
   --print (roll)
@@ -416,7 +422,7 @@ local function Dice_ParseChat(msg,name)
   if name then
   
 
-    Dice_CaptureRoll(name, roll, min, max)
+    Dice_CaptureRoll(name, roll, min, max, passe)
 
   end
 end
